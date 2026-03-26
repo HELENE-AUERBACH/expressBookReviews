@@ -26,6 +26,7 @@ public_users.post("/register", (req, res) => {
     }
     // Check if both username and password are provided
     if (username && password) {
+        console.log(users);
         // Check if the user does not already exist
         if (!doesExist(username)) {
             // Add the new user to the users array
