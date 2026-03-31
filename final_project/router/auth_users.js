@@ -63,10 +63,15 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     console.log(book);
     if (!book) {
         // Send error message if no book found
-        return res.status(404).json({ message: "Unable to find book with the ISBN ${isbn}!" });
+        return res.status(404).json({ message: "Unable to find book with the ISBN " + isbn + "!" });
     }
 
     // Retrieve username in session
+    console.log(req.session);
+    if (!req.session.authorization) {
+        // Send error message if no req.session.authorization found
+        return res.status(404).json({ message: "Unable to find authorization in session!" });
+    }
     const username = req.session.authorization.username;
     console.log(username);
     if (!username) {
@@ -92,7 +97,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
         }
     } else {
         // Send error message if no review was provided as a request query
-        return res.status(422).json({ message: "None review was provided as a request query!" });
+        return res.status(422).json({ message: "None review was provided as a request query parameter!" });
     }
 });
 
