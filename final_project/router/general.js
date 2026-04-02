@@ -69,7 +69,7 @@ public_users.get('/author/:author',function (req, res) {
     let filtered_books_details = books_details.filter((book) => book.author === author);
     if (!filtered_books_details.length) {
         // Send error message if no book found
-        return res.status(404).json({ message: "No book found for the author \"" + author + "\"!" });
+        return res.status(404).json({ message: 'No book found for the author "' + author + '"!' });
     }
     // Send the filtered_books_details array as the response to the client
     res.send(filtered_books_details);
@@ -87,7 +87,7 @@ public_users.get('/title/:title',function (req, res) {
     let filtered_books_details = books_details.filter((book) => book.title === title);
     if (!filtered_books_details.length) {
         // Send error message if no book found
-        return res.status(404).json({ message: "No book found for the title \"" + title + "\"!" });
+        return res.status(404).json({ message: 'No book found for the title "' + title + '"!' });
     }
     // Send the filtered_books array as the response to the client
     res.send(filtered_books_details);
@@ -100,6 +100,10 @@ public_users.get('/review/:isbn',function (req, res) {
     console.log(isbn)
     const book = books[isbn]
     console.log(book)
+    if (!book) {
+        // Send error message if no book found
+        return res.status(404).json({ message: "Unable to find the book with the ISBN " + isbn + "!" });
+    }
     const reviews = book.reviews;
     console.log(reviews)
     if (!reviews) {
