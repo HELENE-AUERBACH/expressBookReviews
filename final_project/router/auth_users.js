@@ -102,6 +102,43 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     }
 });
 
+// Delete a book review
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    // Retrieve the isbn parameter from the request URL and find the corresponding book's details
+    const isbn = req.params.isbn;
+    console.log(isbn);
+    const book = books[isbn];
+    console.log(book);
+    if (!book) {
+        // Send error message if no book found
+        return res.status(404).json({ message: "Unable to find book with the ISBN " + isbn + "!" });
+    }
+
+    // Retrieve username in session
+    console.log(req.session);
+    if (!req.session.authorization) {
+        // Send error message if no req.session.authorization found
+        return res.status(404).json({ message: "Unable to find authorization in session!" });
+    }
+    const username = req.session.authorization.username;
+    console.log(username);
+    if (!username) {
+        // Send error message if no username found
+        return res.status(404).json({ message: "Unable to find username in session!" });
+    }
+
+    let book_reviews = book.reviews;
+    console.log(book_reviews);
+    if (!book_reviews[username]) {
+        // Send error message if no review found
+        return res.status(404).json({ message: "Unable to find a review of the user " + username + " for the book with the ISBN " + isbn + "!" });
+    }
+    // Delete the review of the authenticated user
+    delete book_reviews[username];
+    // Send success message indicating the review has been deleted
+    res.send(`Review of user ${username} for the ISBN ${isbn} deleted.`);
+});
+
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
 module.exports.users = users;
