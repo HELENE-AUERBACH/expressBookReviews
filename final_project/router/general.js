@@ -97,8 +97,12 @@ public_users.get('/title/:title',function (req, res) {
 public_users.get('/review/:isbn',function (req, res) {
     // Retrieve the isbn parameter from the request URL and send the corresponding book's details
     const isbn = req.params.isbn;
-    const reviews = books[isbn].reviews;
-    if (!reviews.length) {
+    console.log(isbn)
+    const book = books[isbn]
+    console.log(book)
+    const reviews = book.reviews;
+    console.log(reviews)
+    if (!reviews) {
         // Send error message if no review found
         return res.status(404).json({ message: "No review found for the book with the ISBN " + isbn + "!" });
     }

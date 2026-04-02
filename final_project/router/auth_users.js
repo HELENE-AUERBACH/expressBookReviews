@@ -47,7 +47,7 @@ regd_users.post("/login", (req,res) => {
         req.session.authorization = {
             accessToken, username
         }
-        console.log(req.session.authorization);
+        console.log(req.session);
         return res.status(200).send(`User ${req.session.authorization.username} successfully logged in`);
     } else {
         return res.status(404).json({ message: "Invalid Login. Check username and password" });
@@ -92,6 +92,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
             // Send success message indicating the review has been added
             res.send(`Review of user ${username} for the ISBN ${isbn} added.`);
         } else {
+            book_reviews[username] = review;
             // Send success message indicating the review has been updated
             res.send(`Review of user ${username} for the ISBN ${isbn} updated.`);
         }
